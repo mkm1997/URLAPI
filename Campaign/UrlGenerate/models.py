@@ -4,6 +4,12 @@ from datetime import datetime
 # Create your models here.
 
 
+def game_directory_path(instance, filename):
+    return 'games/{0}.{1}'.format(instance.game_name,filename.split(".")[1])
+
+
+
+
 class MobileCodes(models.Model):
     mnc = models.IntegerField()
     mcc = models.IntegerField()
@@ -40,6 +46,14 @@ class User_Camp(models.Model):
 
 
 
+class Game(models.Model):
+    name=models.CharField(max_length=20)
+    # pic=models.ImageField(upload_to=game_directory_path,blank=True,null=True)
+    url=models.URLField()
+    pic=models.URLField()
+
+    def __str__(self):
+        return self.name
 
 
 class Hit(models.Model):
@@ -48,10 +62,9 @@ class Hit(models.Model):
     sms = models.CharField(max_length=2000,default="XXX")
     my_date = models.DateTimeField(auto_now_add=True,editable=True)
 
-
-
     def __str__(self):
         return str(self.my_date)
+
 
 
 

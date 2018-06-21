@@ -9,11 +9,11 @@ from urllib.parse import urlparse
 
 from rest_framework.views import APIView,Response
 
-from.models import MobileCodes,Campaign,User_Camp,Hit
+from .models import MobileCodes, Campaign, User_Camp, Hit, Game
 import json
 import time
 from datetime import datetime,timedelta
-
+from django.views import View
 
 
 
@@ -154,6 +154,30 @@ def Index(request):
     for l in li:
         print(l.zone)
     return HttpResponse("hello")
+
+
+class GameApi(View):
+    def get(self,request):
+        all_games=Game.objects.all()
+        data=[]
+        for object in all_games:
+            data.append({"game_name":object.name,"game_pic":object.pic,"game_url":object.url})
+        return HttpResponse(json.dumps(data), content_type="application/json")
+
+
+    # def post(self,request):
+    #     all_games=Game.objects.all()
+    #     game=all_games.first()
+    #     print(request.data)
+    #     success_result={"result":"success"}
+    #     failed_Result= {"result":"failed"}
+    #
+    #     if "game_name" in request.data and "game_pic" in request.data and "game_url" in request.data:
+    #         Game.objects.get_or_create(name=request.data["game_name"],pic=request.data["game_pic"],url=request.data["game_url"])
+    #         return HttpResponse(json.dumps(success_result), content_type="application/json")
+    #
+    #     else:
+    #         return HttpResponse(json.dumps(failed_Result), content_type="application/json")
 
 
 #{"uuid":9876,"camp_id":2,"sms":"hello"}
